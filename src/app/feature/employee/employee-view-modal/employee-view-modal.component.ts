@@ -13,3 +13,5 @@ export class EmployeeViewModalComponent {
   @Input() employee!: Employee;
   @Output() close = new EventEmitter();
 }
+
+

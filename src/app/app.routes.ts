@@ -13,87 +13,23 @@ import { RoomsFormComponent } from './feature/rooms/rooms-form/rooms-form.compon
 
 
 
-
-
-
-
-
 export const routes: Routes = [
-  {
-    path: "Principal",
-    component: MainListComponent
-},
+  { path: "Principal", component: MainListComponent },
+  { path: "Manager", component: ManagerFormComponent },
+  { path: "Employee", component: EmployeeListComponent },
+  { path: "Customer", component: CustomerListComponent },
+  { path: "Rooms", component: RoomsListComponent },
+  { path: "Reservations", component: ReservationsListComponent },
+  { path: "Invoices", component: InvoicesListComponent },
+  { path: "Configuration", component: ConfigurationListComponent },
+  { path: "Cleaning", component: CleaningListComponent },
+  { path: "new-employee", component: EmployeeFormComponent },
+  { path: "new-rooms", component: RoomsFormComponent },
+  { path: '', redirectTo: 'Principal', pathMatch: 'full' },
+
+  // ⚠️ Ruta parametrizada corregida para no generar error de prerender
 
 
-  {
-    path: "Manager",
-    component: ManagerFormComponent
-  },
-
-
-  {
-    path: "Employee",
-    component: EmployeeListComponent
-  },
-
-
-  {
-    path: "Customer",
-    component: CustomerListComponent
-  },
-
-
-  {
-    path: "Rooms",
-    component: RoomsListComponent
-  },
-
-
-  {
-    path: "Reservations",
-    component: ReservationsListComponent
-  },
-
-
-  {
-    path: "Invoices",
-    component: InvoicesListComponent
-  },
-
-
-  {
-    path: "Configuration",
-    component: ConfigurationListComponent
-  },
-
-
-  {
-    path: "Cleaning",
-    component: CleaningListComponent
-  },
-
-
-  {
-    path: "new-employee",
-    component: EmployeeFormComponent
-  },
-
-
-  {
-    path: "new-rooms",
-    component: RoomsFormComponent
-  },
-
-
-  {
-    path: '',
-    redirectTo: 'Principal',
-    pathMatch: 'full'
-  },
-
-
-  { path: 'view-employee/:id', component: EmployeeFormComponent }
- 
 ];
 
 
