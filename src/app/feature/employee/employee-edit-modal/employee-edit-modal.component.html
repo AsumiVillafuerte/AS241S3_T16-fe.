@@ -1,0 +1,154 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <button class="close-button" type="button" (click)="cancel()" aria-label="Cerrar modal">✕</button>
+    <h2>Editar Empleado</h2>
+    <span class="subtitle">Modifique la información del empleado</span>
+    <form #editForm="ngForm">
+      <div class="form-group">
+        <label>Nombres:</label>
+        <input [(ngModel)]="updatedEmployee.names" name="names"
+          pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$" required #names="ngModel"
+          (blur)="validateEditName()" (ngModelChange)="validateEditName()" />
+
+          <!-- Validaciones visuales -->
+          @if (names.invalid || nameOnlySpacesEdit) {
+            <div class="error">
+              @if (names.errors?.['required']) {
+                <span>Este campo es obligatorio.</span>
+              }
+              @if (names.errors?.['pattern']) {
+                <span>Solo se permiten letras.</span>
+              }
+              @if (nameOnlySpacesEdit) {
+                <span>No se permiten solo espacios.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Apellidos:</label>
+          <input [(ngModel)]="updatedEmployee.surnames" name="surnames" required pattern="^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$"
+            #surnames="ngModel" (blur)="validateEditSurname()" (ngModelChange)="validateEditSurname()" />
+
+            <!-- Validaciones visuales -->
+            @if (surnames.invalid || surnameOnlySpacesEdit) {
+              <div class="error">
+                @if (surnames.errors?.['required']) {
+                  <span>Este campo es obligatorio.</span>
+                }
+                @if (surnames.errors?.['pattern']) {
+                  <span>Solo se permiten letras.</span>
+                }
+                @if (surnameOnlySpacesEdit) {
+                  <span>No se permiten solo espacios.</span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de Documento:</label>
+            <select [(ngModel)]="updatedEmployee.document_type" name="document_type" required #documentType="ngModel">
+              <option value="DNI">DNI</option>
+              <option value="CNE">CNE</option>
+            </select>
+            @if (documentType.invalid && documentType.touched) {
+              <div class="error">
+                <span>Seleccione un tipo de documento.</span>
+              </div>
+            }
+          </div>
+
+          <!-- Número de Documento -->
+          <div class="form-group">
+            <label>Número de Documento:</label>
+            <input
+              [(ngModel)]="updatedEmployee.document_number"
+              name="document_number"
+              required
+              [pattern]="updatedEmployee.document_type === 'DNI' ? '^[0-9]{8}$' : '^[0-9]{20}$'"
+              [maxlength]="updatedEmployee.document_type === 'DNI' ? 8 : 20"
+              #documentNumber="ngModel"
+              (blur)="validateEditDocumentNumber()"
+              (ngModelChange)="validateEditDocumentNumber()"
+              class="form-control"
+              />
+
+              @if (documentNumber.invalid || documentNumberOnlySpacesEdit || invalidDocumentNumberEdit) {
+                <div class="error">
+                  @if (documentNumber.errors?.['required']) {
+                    <span>Este campo es obligatorio.</span>
+                  }
+                  @if (documentNumber.errors?.['pattern']) {
+                    <span>
+                      El {{ updatedEmployee.document_type }} debe tener {{
+                      updatedEmployee.document_type === 'DNI' ? 'exactamente 8' : 'entre 9 y 20'
+                      }} dígitos numéricos.
+                    </span>
+                  }
+                  @if (documentNumberOnlySpacesEdit) {
+                    <span>No se permiten solo espacios.</span>
+                  }
+                  @if (invalidDocumentNumberEdit) {
+                    <span>
+                      No se permite el número de {{ updatedEmployee.document_type }} ingresado.
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Teléfono -->
+            <div class="form-group">
+              <label>Teléfono:</label>
+              <input
+                [(ngModel)]="updatedEmployee.phone"
+                name="phone"
+                required
+                pattern="^9[0-9]{8}$"
+                maxlength="9"
+                #phone="ngModel"
+                (blur)="validateEditPhone()"
+                (ngModelChange)="validateEditPhone()"
+                />
+
+                <!-- Validaciones visuales -->
+                @if (phone.invalid || phoneOnlySpacesEdit) {
+                  <div class="error">
+                    @if (phone.errors?.['required']) {
+                      <span>Este campo es obligatorio.</span>
+                    }
+                    @if (phone.errors?.['pattern']) {
+                      <span>Debe empezar con 9 y tener 9 dígitos.</span>
+                    }
+                    @if (phoneOnlySpacesEdit) {
+                      <span>No se permiten solo espacios.</span>
+                    }
+                  </div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label>Turno:</label>
+                <select [(ngModel)]="updatedEmployee.shift" name="shift" required #shift="ngModel">
+                  <option value="Mañana (06:00 – 13:59)">Mañana (06:00 – 13:59)</option>
+                  <option value="Tarde (14:00 – 21:59)">Tarde (14:00 – 21:59)</option>
+                  <option value="Noche (22:00 – 05:59)">Noche (22:00 – 05:59)</option>
+                </select>
+                @if (shift.invalid && shift.touched) {
+                  <div class="error">
+                    <span>Seleccione un turno.</span>
+                  </div>
+                }
+              </div>
+
+              <div class="modal-actions">
+                <button type="button" (click)="update()" [disabled]="editForm.invalid">
+                  <i class="fa-solid fa-floppy-disk" style="margin-right: 0.5rem;"></i>Actualizar
+                </button>
+                <button type="button" (click)="cancel()">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>

@@ -1,0 +1,86 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <button class="close-button" type="button" (click)="cancel()" aria-label="Cerrar modal">✕</button>
+    <h2>Editar Habitación</h2>
+    <span class="subtitle">Modifique la información de la habitación</span>
+
+    <form #editForm="ngForm" (ngSubmit)="update()">
+      <div class="form-group">
+        <label>Número de Habitación:</label>
+        <input id="roomNumber" type="number" class="form-control" [(ngModel)]="updatedRoom.roomNumber" name="roomNumber"
+          required min="2" pattern="^[1-9]\d*$" />
+        </div>
+
+        <div class="form-group">
+          <label>Nivel:</label>
+          <select [(ngModel)]="updatedRoom.level" name="level" required class="form-control" #level="ngModel">
+            <option value="" disabled selected>Seleccione un piso</option>
+            <option value="Piso 1">Piso 1</option>
+            <option value="Piso 2">Piso 2</option>
+            <option value="Piso 3">Piso 3</option>
+            <option value="Piso 4">Piso 4</option>
+          </select>
+          @if (level.invalid && level.touched) {
+            <div class="text-danger">
+            </div>
+          }
+        </div>
+
+
+        <div class="form-group">
+          <label>Tipo de Habitación:</label>
+          <select [(ngModel)]="updatedRoom.roomType" name="roomType" required>
+            <option value="">Seleccione</option>
+            <option value="familiar">Familiar</option>
+            <option value="corporativa">Corporativa</option>
+            <option value="matrimonial">Matrimonial</option>
+            <option value="individual">Individual</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Costo por Día:</label>
+          <input type="number" [(ngModel)]="updatedRoom.costPerDay" name="costPerDay" [min]="50" required />
+        </div>
+
+        <div class="form-group">
+          <label>Actividad de la Habitación:</label>
+          <select [(ngModel)]="updatedRoom.activityRoom" name="activityRoom" required>
+            <option value="">Seleccione</option>
+            <option value="Disponible">Disponible</option>
+            <option value="Ocupado">Ocupado</option>
+            <option value="Limpieza">Limpieza</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+            <option value="Reservada">Reservada</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="modificationDate">Fecha de modificación</label>
+          <input type="datetime-local" class="form-control" [value]="modificationDate" (click)="abrirCalendario($event)"
+            (change)="revertirFecha($event)" onkeydown="return false" />
+          </div>
+        </form>
+
+        <form #editForm="ngForm" (ngSubmit)="update()">
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="roomDescription">Descripción:</label>
+            <textarea id="roomDescription" name="roomDescription" [(ngModel)]="updatedRoom.roomDescription"
+          class="block text-gray-900 text-sm rounded-lg focus:ring focus:ring-blue-500 px-2 py-3" style="
+      width: 500px;
+      height: 120px;
+      resize: none;
+      background-color: #f0f0f0;   /* color plomo claro */
+      border: 1px solid #d1d5db;   /* borde gris claro */
+    " required></textarea>
+          </div>
+
+
+          <div class="modal-actions">
+            <button type="submit" [disabled]="editForm.invalid">
+              <i class="fa-solid fa-floppy-disk" style="margin-right: 0.5rem;"></i>Actualizar
+            </button>
+            <button type="button" (click)="cancel()">Cancelar</button>
+          </div>
+        </form>
+      </div>

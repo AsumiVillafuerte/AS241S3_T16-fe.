@@ -1,0 +1,26 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <button class="close-button" type="button" (click)="close.emit()" aria-label="Cerrar">
+      ✕
+    </button>
+
+    <h2>Detalles del Empleado</h2>
+    <span class="subtitle">Información completa del empleado seleccionado.</span>
+
+    <div class="details">
+      <p><strong>ID:</strong> {{ employee.id_employee }}</p>
+      <p><strong>Nombres:</strong> {{ employee.names }}</p>
+      <p><strong>Apellidos:</strong> {{ employee.surnames }}</p>
+      <p><strong>Tipo de Documento:</strong> {{ employee.document_type }}</p>
+      <p><strong>Número de Documento:</strong> {{ employee.document_number }}</p>
+      <p><strong>Teléfono:</strong> {{ employee.phone }}</p>
+      <p><strong>Turno:</strong> {{ employee.shift }}</p>
+      <p><strong>Fecha de Registro:</strong> {{ employee.registrationDate }}</p>
+      <p><strong>Estado:</strong> {{ employee.state === 'A' ? 'Activo' : 'Inactivo' }}</p>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" (click)="close.emit()">Cerrar</button>
+    </div>
+  </div>
+</div>

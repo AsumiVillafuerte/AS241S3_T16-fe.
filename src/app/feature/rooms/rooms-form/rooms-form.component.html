@@ -1,0 +1,145 @@
+<div class="container-general">
+  <!-- Encabezado -->
+  <div class="container">
+    <h1>Gestión de Habitación</h1>
+  </div>
+
+
+  <!-- Barra superior -->
+  <div class="top-bar">
+    <div class="tab-buttons">
+      <button><a href="/Rooms">Lista de Habitaciones</a></button>
+      <button class="active"><a href="/new-rooms">Nuevo habitación</a></button>
+    </div>
+  </div>
+
+
+  <!-- Formulario -->
+  <form [formGroup]="form" (ngSubmit)="form.valid && onSave()" class="form-container">
+    <h2 class="form-title">Nuevo habitación</h2>
+    <p class="form-subtitle">Complete el formulario para crear una nueva habitación.</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="roomNumber">Número de Habitación</label>
+        <input id="roomNumber" type="number" class="form-control" formControlName="roomNumber"
+          placeholder="Ingrese N° habitación ej: 01" min="1" (wheel)="adjustValue()" (keydown.ArrowUp)="adjustValue()"
+          (keydown.ArrowDown)="adjustValue()" />
+
+          @if (form.get('roomNumber')?.touched && form.get('roomNumber')?.errors) {
+            <div class="error">
+              @if (form.get('roomNumber')?.errors?.['required']) {
+                <span style="color: red; font-size: 12px;">
+                  El número de habitación es obligatorio
+                </span>
+              }
+              @if (form.get('roomNumber')?.errors?.['min']) {
+                <span style="color: red; font-size: 12px;">
+                  No se permiten números negativos ni cero
+                </span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="level">Nivel</label>
+          <select id="level" formControlName="level" class="form-control">
+            <option value="" disabled selected>Seleccione un piso</option>
+            <option value="Piso 1">Piso 1</option>
+            <option value="Piso 2">Piso 2</option>
+            <option value="Piso 3">Piso 3</option>
+            <option value="Piso 4">Piso 4</option>
+          </select>
+          @if (form.get('level')?.invalid && form.get('level')?.touched) {
+            <div>
+              @if (form.get('level')?.errors?.['required']) {
+                <span style="color: red; font-size: 12px;">
+                  Este campo es obligatorio.
+                </span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="roomType">Tipo de Habitación</label>
+          <select id="roomType" formControlName="roomType">
+            <option value="" disabled selected>Seleccione un tipo</option>
+            <option value="familiar">Familiar</option>
+            <option value="corporativa">Corporativa</option>
+            <option value="matrimonial">Matrimonial</option>
+            <option value="individual">Individual</option>
+          </select>
+          @if (form.get('roomType')?.invalid && form.get('roomType')?.touched) {
+            <div class="error">
+              <span style="color: red; font-size: 12px;">El tipo de habitación es obligatorio</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="costPerDay">Costo por Día (S/.)</label>
+          <input type="number" class="form-control" formControlName="costPerDay" [value]="form.get('costPerDay')?.value"
+            (click)="adjustValue()" (wheel)="adjustValue()" (keydown.ArrowUp)="adjustValue()" min="50" />
+
+            @if (form.get('costPerDay')?.touched && form.get('costPerDay')?.errors) {
+              <div class="error">
+                @if (form.get('costPerDay')?.errors?.['required']) {
+                  <span style="color: red; font-size: 12px;">
+                    El costo por día es obligatorio
+                  </span>
+                }
+                @if (form.get('costPerDay')?.errors?.['min']) {
+                  <span style="color: red; font-size: 12px;">
+                    El costo mínimo permitido es S/. 50
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="activityRoom">Actividad / Habitación</label>
+            <select id="activityRoom" formControlName="activityRoom">
+              <option value="" disabled selected>Seleccione una opción</option>
+              <option value="Disponible">Disponible</option>
+            </select>
+            @if (form.get('activityRoom')?.invalid && form.get('activityRoom')?.touched) {
+              <div class="error">
+                <span style="color: red; font-size: 12px;">Este campo es obligatorio</span>
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="registrationDate">Fecha de registro</label>
+            <input type="datetime-local" id="registrationDate" class="form-control" name="registrationDate"
+              [value]="currentDateTime" (click)="openCalendar($event)" (change)="restoreOriginalDate($event)"
+              onkeydown="return false" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="roomDescription">Descripción</label>
+              <textarea id="roomDescription" formControlName="roomDescription"
+              placeholder="Ingrese una descripción de la habitación"></textarea>
+              @if (form.get('roomDescription')?.invalid && form.get('roomDescription')?.touched) {
+                <div class="error">
+                  <span style="color: red; font-size: 12px;">La descripción es obligatoria</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button type="button" class="btn-cancel" routerLink="/Rooms">Cancelar</button>
+            <button type="submit" class="btn-primary">Crear Habitación</button>
+          </div>
+        </form>
+      </div>

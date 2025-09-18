@@ -1,0 +1,106 @@
+/* Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal */
+.modal {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 380px;
+  padding: 24px 32px;
+  position: relative;
+  font-family: Arial, sans-serif;
+
+  /* Botón de cerrar */
+  .close-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+    &:hover {
+      color: #000;
+    }
+  }
+
+  /* Título */
+  h2 {
+    margin: 0 0 8px;
+    font-size: 1.5rem;
+    color: #1a237e; /* azul oscuro */
+  }
+
+  /* Subtítulo */
+  .subtitle {
+    display: block;
+    margin-bottom: 16px;
+    color: #616161;
+    font-size: 0.95rem;
+  }
+
+  /* Contenedor de detalles */
+  .details {
+    p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: #424242;
+
+      strong {
+        display: inline-block;
+        width: 190px; /* ajustar según longitud de etiquetas */
+        font-weight: 600;
+        color: #333;
+      }
+    }
+
+    /* Estado (píldora) */
+    .state {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background-color: #e8f5e9; /* verde claro */
+      color: #2e7d32; /* verde oscuro */
+      margin-left: 4px;
+    }
+  }
+
+  /* Botones al pie */
+  .modal-actions {
+    margin-top: 24px;
+    text-align: right;
+
+    button {
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      border: 1px solid #d1d1d1;
+      background: #fff;
+      color: #424242;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+    }
+  }
+}

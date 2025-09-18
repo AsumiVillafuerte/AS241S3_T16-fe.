@@ -1,0 +1,166 @@
+<div class="container-general">
+  @if (employee) {
+    <!-- Encabezado -->
+    <div class="container">
+      <h1>Gestión de Empleados de Limpieza</h1>
+      <p>Administre los empleados de limpieza del hotel</p>
+    </div>
+
+    <!-- Barra superior -->
+    <div class="top-bar">
+      <div class="tab-buttons">
+        <a routerLink="/Employee" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="btn">
+          Lista de Empleados
+        </a>
+        <a routerLink="/new-employee" routerLinkActive="active" class="btn">
+          Nuevo Empleado
+        </a>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <form class="form-container" (ngSubmit)="onSubmit(employeeForm)" #employeeForm="ngForm">
+
+      <h2 class="form-title">Nuevo Empleado de Limpieza</h2>
+      <p class="form-subtitle">Complete el formulario para registrar un nuevo empleado</p>
+
+      <!-- Nombre y Apellido -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="names" [(ngModel)]="employee.names" #names="ngModel"
+            placeholder="Ingrese nombres" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$" required
+            (ngModelChange)="validateName()" />
+
+          @if ((names.invalid && names.touched) || nameOnlySpaces) {
+            <div class="error">
+              @if (names.errors?.['required']) {
+                <small>El nombre es obligatorio.</small>
+              }
+              @if (names.errors?.['pattern']) {
+                <small>Solo letras y espacios son permitidos.</small>
+              }
+              @if (nameOnlySpaces) {
+                <small>No se permiten solo espacios en el nombre.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" name="surnames" [(ngModel)]="employee.surnames" #surnames="ngModel"
+            placeholder="Ingrese apellidos" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$" required
+            (ngModelChange)="validateSurname()" />
+
+          @if ((surnames.invalid && surnames.touched) || surnameOnlySpaces) {
+            <div class="error">
+              @if (surnames.errors?.['required']) {
+                <small>El apellido es obligatorio.</small>
+              }
+              @if (surnames.errors?.['pattern']) {
+                <small>Solo letras y espacios son permitidos.</small>
+              }
+              @if (surnameOnlySpaces) {
+                <small>No se permiten solo espacios en el apellido.</small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Información Laboral -->
+      <h3 class="section-title">Información Laboral</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tipoDocumento">Tipo de documento</label>
+          <select id="tipoDocumento" name="document_type" [(ngModel)]="employee.document_type" #document_type="ngModel"
+            required>
+            <option value="" disabled selected>Seleccione una opción</option>
+            <option value="DNI">DNI</option>
+            <option value="CNE">Carnet de extranjería</option>
+          </select>
+
+          @if (document_type.invalid && document_type.touched) {
+            <div class="error">
+              <small>Debe seleccionar un tipo de documento.</small>
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="documento">Número de documento</label>
+          <input type="text" id="documento" name="document_number" [(ngModel)]="employee.document_number"
+            #document_number="ngModel" placeholder="Ingrese número"
+            [pattern]="employee.document_type === 'DNI' ? '^[0-9]{8}$' : '^[0-9]{20}$'" maxlength="20" required
+            (ngModelChange)="validateDocumentNumber()" (blur)="validateDocumentNumber()" />
+
+          @if ((document_number.invalid && document_number.touched) || documentNumberOnlySpaces || invalidDocumentNumber) {
+            <div class="error">
+              @if (document_number.errors?.['required']) {
+                <small>El número de documento es obligatorio.</small>
+              }
+              @if (document_number.errors?.['pattern']) {
+                <small>{{ employee.document_type === 'DNI' ? 'DNI debe tener 8 dígitos.' : 'Máx. 20 dígitos permitidos.' }}</small>
+              }
+              @if (documentNumberOnlySpaces) {
+                <small>No se permiten solo espacios.</small>
+              }
+              @if (invalidDocumentNumber) {
+                <small>No se encontró el {{ employee.document_type === 'DNI' ? 'DNI' : 'CNE' }} ingresado.</small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="phone" [(ngModel)]="employee.phone" #phone="ngModel"
+            placeholder="Ingrese número de teléfono" pattern="^(?!\s*$)9[0-9]{8}$" required
+            (ngModelChange)="validatePhone()" />
+
+          @if ((phone.invalid && phone.touched) || phoneOnlySpaces) {
+            <div class="error">
+              @if (phone.errors?.['required']) {
+                <small>El teléfono es obligatorio.</small>
+              }
+              @if (phone.errors?.['pattern']) {
+                <small>Debe empezar con 9 y tener 9 dígitos.</small>
+              }
+              @if (phoneOnlySpaces) {
+                <small>No se permiten solo espacios.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="turno">Turno</label>
+          <select id="turno" name="shift" [(ngModel)]="employee.shift" #shift="ngModel" required>
+            <option value="">Seleccione turno</option>
+            <option value="Mañana (06:00 – 13:59)">Mañana (06:00 – 13:59)</option>
+            <option value="Tarde (14:00 – 21:59)">Tarde (14:00 – 21:59)</option>
+            <option value="Noche (22:00 – 05:59)">Noche (22:00 – 05:59)</option>
+          </select>
+
+          @if (shift.invalid && shift.touched) {
+            <div class="error">
+              <small>Debe seleccionar un turno.</small>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="button-row">
+        <button class="btn-cancel" routerLink="/Employee">Cancelar</button>
+        <button class="btn-primary" type="submit" [disabled]="loading">
+          <i class="fa-regular fa-circle-user"></i> Registrar Empleado
+        </button>
+      </div>
+    </form>
+  }
+</div>

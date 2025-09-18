@@ -1,0 +1,33 @@
+<div class="sidebar" [ngClass]="{ expanded: isExpanded }">
+  <div class="sidebar-top">
+    <button class="menu-btn" (click)="toggleSidebar()"><i class="fas fa-bars"></i></button>
+  </div>
+  <hr />
+
+  <ul class="nav-list">
+    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="fa-solid fa-house"></i><a [routerLink]="'/Principal'">Principal</a>
+    </li>
+    <li routerLinkActive="active"><i class="fa-solid fa-key"></i><a [routerLink]="'/Manager'">Administradores</a></li>
+    <li routerLinkActive="active"><i class="fa-solid fa-circle-user"></i><a [routerLink]="'/Employee'">Empleados</a></li>
+    <li routerLinkActive="active"><i class="fa-solid fa-users"></i><a [routerLink]="'/Customer'">Clientes</a></li>
+    <li routerLinkActive="active"><i class="fa-solid fa-bed"></i><a [routerLink]="'/Rooms'">Habitaciones</a></li>
+    <li routerLinkActive="active"><i class="fa-solid fa-calendar-days"></i><a [routerLink]="'/Reservations'">Reservas</a></li>
+    <li routerLinkActive="active"><i class="fa-solid fa-circle-dollar-to-slot"></i><a [routerLink]="'/Invoices'">Facturas</a></li>
+    <li routerLinkActive="active"><i class="fa-solid fa-broom"></i><a [routerLink]="'/Cleaning'">Limpieza</a></li>
+    <li routerLinkActive="active"><i class="fa-solid fa-cog"></i><a [routerLink]="'/Configuration'">Configuración</a></li>
+  </ul>
+
+  <div class="sidebar-bottom">
+    <div class="profile">
+      <i class="fas fa-user-circle profile-icon"></i>
+      <div class="profile-info">
+        <p class="username">admin</p>
+        <p class="role">ADM - Administrador</p>
+      </div>
+    </div>
+    <button class="logout-btn">
+      <i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión
+    </button>
+  </div>
+</div>

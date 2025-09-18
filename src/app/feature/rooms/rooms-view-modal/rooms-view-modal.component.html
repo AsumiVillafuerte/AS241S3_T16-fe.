@@ -1,0 +1,47 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <button class="close-button" type="button" (click)="close.emit()" aria-label="Cerrar">
+      ✕
+    </button>
+
+    <h2>Detalles de la Habitación</h2>
+    <span class="subtitle">Información completa de la habitación seleccionada.</span>
+
+    @if (room) {
+      <div class="details">
+        <p><strong>ID:</strong> {{ room.idRoom || 'No disponible' }}</p>
+        <p><strong>Número:</strong> {{ room.roomNumber || 'No disponible' }}</p>
+        <p><strong>Tipo:</strong> {{ room.roomType || 'No disponible' }}</p>
+        <p><strong>Actividad:</strong>
+        <span class="tipo-tag" [ngClass]="{
+          'tipo-disponible': room.activityRoom === 'Disponible',
+          'tipo-ocupado': room.activityRoom === 'Ocupado',
+          'tipo-limpieza': room.activityRoom === 'Limpieza',
+          'tipo-mantenimiento': room.activityRoom === 'Mantenimiento',
+          'tipo-reservada': room.activityRoom === 'Reservada'
+        }">
+          {{ room.activityRoom || 'No disponible' }}
+        </span>
+      </p>
+      <p><strong>Descripción:</strong> {{ room.roomDescription || 'No disponible' }}</p>
+      <p><strong>Nivel:</strong> {{ room.level || 'No disponible' }}</p>
+      <p><strong>Costo por Día:</strong>
+      {{ room.costPerDay.toString().includes('S/') ? room.costPerDay : ('S/ ' + room.costPerDay) }}
+    </p>
+    <p><strong>Estado:</strong>
+    {{ room.state === 'A' ? 'Activo' : room.state === 'I' ? 'Inactivo' : 'No especificado' }}
+  </p>
+  <p><strong>Fecha de Registro:</strong>
+  {{ room.registrationDate || 'No disponible' }}
+</p>
+<p><strong>Fecha de Modificación:</strong>
+{{ room.modificationDate || 'No disponible' }}
+</p>
+</div>
+}
+
+<div class="modal-actions">
+  <button type="button" (click)="close.emit()">Cerrar</button>
+</div>
+</div>
+</div>

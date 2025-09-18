@@ -1,0 +1,157 @@
+<div class="container-general">
+  <!-- Encabezado -->
+  <div class="container">
+    <h1>Gestión de Habitaciones</h1>
+  </div>
+
+
+  <!-- Barra superior -->
+  <div class="top-bar">
+    <div class="tab-buttons">
+      <!-- Lista de Habitaciones -->
+      <a routerLink="/Rooms" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="btn">
+        Lista de Habitaciones
+      </a>
+
+
+      <!-- Nueva Habitación -->
+      <a routerLink="/new-rooms" routerLinkActive="active" class="btn">
+        Nueva Habitación
+      </a>
+    </div>
+
+    <div class="search-container">
+      <i class="fas fa-search icon"></i>
+      <input type="text" [(ngModel)]="searchTerm" (input)="filterRooms()" placeholder="Buscar...">
+    </div>
+    <button class="pdf-button" (click)="reportPdf()">
+      <i class="fas fa-file-pdf"></i> Generar PDF
+    </button>
+
+
+
+    <div class="dropdown-container">
+      <button class="filter-button" (click)="toggleDropdown()">
+        <i class="fas fa-filter icon1"></i>
+      </button>
+
+
+      @if (showDropdown) {
+        <div class="dropdown-content">
+          <button (click)="applyFilter('A')">Activo</button>
+          <button (click)="applyFilter('I')">Inactivo</button>
+          <button (click)="applyFilter('')">Todos</button>
+        </div>
+      }
+    </div>
+
+
+    <button class="new-button">
+      <i class="fas fa-plus icon2"></i>
+      <a routerLink="/new-rooms">Nueva Habitación</a>
+    </button>
+  </div>
+
+
+  <!-- Tabla de habitación -->
+  <div class="contenedor-habitacion">
+    <h3>Habitaciones</h3>
+    <p>Gestione las habitaciones del hotel. Puede ver, editar o cambiar el estado de las habitaciones.</p>
+
+
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Número</th>
+          <th style="text-align: center;">Tipo</th>
+          <th style="text-align: center;">Act./Hab</th>
+          <th>Descripción</th>
+          <th>Niveles</th>
+          <th>Costo/Día</th>
+          <th>Estado</th>
+          <th>Fch./Reg.</th>
+          <th>Fch./Mod.</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        @for (room of dataSource; track room) {
+          <tr>
+            <td style="text-align: center;">{{ room.roomNumber }}</td>
+            <td>{{ room.roomType }}</td>
+            <td style="text-align: center;">
+                        <span class="tipo-tag" [ngClass]="{
+                            'tipo-disponible': room.activityRoom === 'Disponible',
+                            'tipo-ocupado': room.activityRoom === 'Ocupado',
+                            'tipo-limpieza': room.activityRoom === 'Limpieza',
+                            'tipo-mantenimiento': room.activityRoom === 'Mantenimiento',
+                            'tipo-reservada': room.activityRoom === 'Reservada'
+                            }">
+                {{ room.activityRoom }}
+              </span>
+            </td>
+            <td>{{ room.roomDescription }}</td>
+            <td>{{ room.level }}</td>
+            <td style="text-align: center;">
+              {{ room.costPerDay | currency:'S/':'symbol-narrow':'1.2-2' }}
+            </td>
+            <td>
+                        <span class="estado-tag" [ngClass]="{
+                        'estado-activo': room.state === 'A',
+                        'estado-inactivo': room.state === 'I'
+                }">
+                {{ room.state === 'A' ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td style="text-align: center; font-size: 13.5px;">{{ room.registrationDate }}</td>
+            <td style="text-align: center; font-size: 13.5px;">{{ room.modificationDate }}</td>
+            <td class="acciones">
+              <div class="acciones-flex">
+                <button class="action-button" (click)="viewRoom(room.idRoom!)">
+                  <i class="fas fa-eye"></i>
+                </button>
+                @if (room.state === 'A') {
+                  <button class="action-button" (click)="editRoom(room.idRoom!)">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                }
+                @if (room.state === 'A') {
+                  <button class="action-button" (click)="deleteRoom(room.idRoom!)">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                }
+                @if (room.state === 'I') {
+                  <button class="action-button" (click)="restoreRoom(room.idRoom!)"
+                    >
+                    <i class="fas fa-undo"></i>
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="goToPrevious()">Anterior</button>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <button [disabled]="currentPage === totalPages" (click)="goToNext()">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal de edición -->
+@if (showEditModal && selectedRoom) {
+  <app-room-edit-modal [room]="selectedRoom" (roomUpdated)="onRoomUpdated($event)"
+    (closeModal)="cancelEdit()" class="modal-container">
+  </app-room-edit-modal>
+}
+
+
+<!-- Modal de vista -->
+@if (showViewModal && selectedRoom) {
+  <app-room-view-modal [room]="selectedRoom" (close)="cancelView()">
+  </app-room-view-modal>
+}
